@@ -1,0 +1,86 @@
+Description of the movies created with EM solutions simulator based on FDTD
+
+1D FDTD  
+=======
+
+(no change in z-direction. E and H field necessarily polarised in the x-y plane)
+
+* Cavity: 
+- Gaussian pulse in vacuum (or air) traveling in a cavity with a perfect electric conductor on the left and a (hypothetical) perfect magnetic conductor on the right. This is due to the staggered fields on the Yee grid, where an electric node will be hit on the left and a magnetic node on the right that are set to zero
+- The E field is being reflected on the boundary to the perfect electric conductor. The magnetic field should be constant inside the material and therefere should show a node as well. However, as that node is not tested it looks like it is penetrating. The same applies to the magnetic field node.
+- An improvement to the simulation should be to incorporate the Dirichlet boundary condition over two cells (?) [naive implementation by restricting loops by one more cell has shown now difference, which also makes sense from the implementation point of view!]
+
+* Carbon, Crown glass, some dielectric:
+- Gaussian pulse traveling through a slab of carbon/crown glass/ dielectric with refractive index n=5. (For Carbon the dielectric constant is chosen the highest in the spectrum as the square root of the refractive index n=3.5, mu=1 as material has almost no magnetic response). 
+- The pulse is introduced on the dotted line and travels to the right. Left of the dotted line is the scatter field region and only contains the EM fields scattered back, not the one from the source.
+- Most of the pulse goes through, we see the reflection at each boundary
+- With increasing refractive index (hence increasing relative permitivity) an increasing proportion of the field is reflected off the boundary)
+- note that all slabs are VERY thin (relative to the pulse) and we are not modelling energy loss in the material in this model. (Otherwise the height of the pulse would continuously decrease when it is travelling through -> make an ohmic model!.)
+- note that the dielectric constant depends on frequency (dispersion). Many tabled values are given for specific frequencies only. The current model does not take the dependency on frequency into account.
+
+* strong dielectric (relative permittivity of 100)/ metal:
+- illustrating the principle of how higher dielectric constant increases reflection (almost all of the pulse is reflected). Link this to why metals are shiny. (Although the model is not correct as we have not included conductivity...)
+- due to wavelength of the pulse in the dielectric being short compared to the grid length we see ringing due to numerical dispersion. This is an artefact of not having fitted the parameters well into the numerical model. It's not physical
+- the metal video uses a Morlet wavelet instead of Gauss
+
+* Dielectric layers
+- Gauss pulse traveling through adjacent layers with different dielectric and magnetic properties.
+- ringing is due to numerical dispersion again.
+
+* Formation of standing waves in optical materials:
+- shows how an incident harmonic plane waves forms (approximate?) standing waves in layers of different dielectrics due to internal reflection
+- note that the scatter field region left to the dashed line only contains the reflected EM fields, not the incident harmonic fields
+
+1D FDTD with ohmic loss
+=======================
+
+* water:
+- inciden plane wave
+- seeing exponential decay (too strong?!)
+- shows why there is a certain penetration depth for materials. (Here it is way too short!)
+- is the short penetration depth due to the ohmic assumption? (We used a relative permittivity for visible light, here water is non ohmic?!)
+
+* Tunnel effect:
+- shows that wave can tunnel through barriers. (Electron tunneling through potential barrier in QM)
+
+* Iron:
+- shows how strong conductivity leads to reflection
+- show this in the update equation for the D-field
+
+*Small penetration depth
+- Gauss pulse that has a very short penetration depth
+- majority gets reflected
+
+2D FDTD
+=======
+
+* 2D cavity and hard Gauss source H_z mode:
+- A Gauss source located at the centre of the cavity and polarised in the (1,1) direction (diagonal from top left to bottom right on the screen)
+- field is visualised by taking the Euclidean norm of the E field in the plane (note that E_z is zero here, as are H_x and H_y) and mapping that linearly to a color scale. No interpolation.
+- the source is a hard source, therefore the E field in the centre grid is eventually set to zero
+- boundary conditions are Dirichlet and lazy (i.e. the loop ignores the respective right and bottom cells for the H-field updates and the left and top boundaries for the E field update)
+- The left and top boundary are thus perfect electric conductors, whereas the bottom and right boundaries are perfect magnetic conductors (a pure theoretical construct)
+- this and the polarisation of the E-field is why the situation is not perfectly symmetric
+
+
+* 2D cavity and soft Gauss source E_z mode:
+- Gauss source polarized in the E_z direction in the same cavity as above.
+- A simple Gaussian soft source has been used this time.
+- Visualised is the E_z component of the field. Colour coding is (bi)logartihmic (for positive and negative values) with a linear interpolation near zero. This makes raises the contrast between the positive and negative values of the E_z field
+
+* 2D cavity and soft Gauss source H_z mode:
+- Gaussian pulse is polarised in (1,1) direction (diagonal from top left to bottom right)
+- visualised is the H_z component showing nice dipole characteristic at the beginning an then quadrupole moments etc later.
+
+to do: Optical fibre with Gaussian pulse at the centre in E_z and H_z mode mode (how to polarise the E field, or better use bird eye view? 
+
+
+Lorentz force
+=============
+
+* Demo
+- Shows motion of a point charge (1C) with mass 1kg in a constant electric and magnetic field. 
+- the electric field is very weak and would be created by charging a capacitor with plates 1 m apart with a PD of sqrt(2) Volts.
+- The magnetic field of 0.5 Tesla, on the other hand, is quite strong and is a field created in MRI scanners. (0.5-3T)
+
+ 
